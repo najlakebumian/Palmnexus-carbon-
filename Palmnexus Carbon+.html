@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PALMNEXUS Carbon+ — Biochar Carbon Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F0EDE6;--bg2:#E8E4DC;--dark:#0D1F1A;--dark2:#132B24;
+  --teal:#0B6E4F;--teal2:#1A9E75;--mint:#2ECFA0;--lime:#A9E66E;
+  --amber:#BA7517;--soil:#5A3E2B;--text:#1C1C1A;--text2:#4A5550;--text3:#7A8A85;
+  --white:#fff;--card:#fff;--border:rgba(11,110,79,.13);--shadow:0 16px 42px rgba(13,31,26,.08);
+  --display:'Syne',sans-serif;--body:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--bg);color:var(--text);overflow-x:hidden}
+button,input,select,textarea{font-family:var(--body)}
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:58px;background:rgba(240,237,230,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 40px;gap:34px}
+.logo{font-family:var(--display);font-weight:800;letter-spacing:-.7px;font-size:18px;color:var(--dark);display:flex;align-items:center;gap:9px;white-space:nowrap}
+.logo-mark{width:29px;height:29px;border-radius:9px;background:linear-gradient(135deg,var(--dark),var(--teal));display:grid;place-items:center;color:var(--mint);font-size:14px;font-weight:800;box-shadow:0 8px 24px rgba(11,110,79,.2)}
+.nav-links{display:flex;gap:24px;flex:1}
+.nav-link{font-size:13px;font-weight:600;color:var(--text2);padding:20px 0 17px;border-bottom:2px solid transparent;cursor:pointer;transition:.2s}
+.nav-link:hover,.nav-link.active{color:var(--teal);border-bottom-color:var(--teal)}
+.nav-right{display:flex;align-items:center;gap:12px;margin-left:auto}
+.live-badge{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:1.4px;color:var(--teal);padding:5px 11px;background:rgba(11,110,79,.08);border:1px solid rgba(11,110,79,.15);border-radius:30px}
+.live-dot{width:7px;height:7px;background:var(--mint);border-radius:50%;animation:pulse 1.7s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.78)}}
+.btn{border:0;border-radius:10px;padding:11px 19px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}
+.btn-dark{background:var(--dark);color:white}.btn-dark:hover{background:var(--teal);transform:translateY(-1px)}
+.btn-teal{background:var(--mint);color:var(--dark)}.btn-teal:hover{background:#24bd8f;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}.btn-outline:hover{border-color:var(--teal);color:var(--teal);transform:translateY(-1px)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--teal2);display:grid;place-items:center;color:white;font-size:11px;font-weight:800}
+.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:5px}.hamburger span{width:22px;height:2px;background:var(--dark);border-radius:4px}
+.mobile-drawer{display:none;position:fixed;top:58px;left:0;right:0;z-index:99;background:rgba(240,237,230,.98);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:12px 16px 18px;box-shadow:0 20px 40px rgba(0,0,0,.08)}
+.mobile-drawer .nav-link{display:block;padding:13px 8px;border-bottom:1px solid var(--border)}
+
+/* SHARED */
+.page{display:none;padding-top:58px;min-height:100vh}.page.active{display:block}.wrap{padding:42px 40px}.section-tag{display:inline-block;background:rgba(11,110,79,.1);color:var(--teal);font-size:10px;font-weight:800;letter-spacing:2px;padding:6px 13px;border-radius:7px;text-transform:uppercase;margin-bottom:16px}.hero-title{font-family:var(--display);font-size:58px;font-weight:800;letter-spacing:-2.4px;line-height:.98;color:var(--dark)}.hero-title span{color:var(--teal)}.hero-copy{font-size:16px;line-height:1.8;color:var(--text2);max-width:620px;margin-top:18px}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:25px;box-shadow:var(--shadow);position:relative;overflow:hidden}.card.dark{background:var(--dark);border-color:rgba(255,255,255,.08);color:white}.card-label{font-size:10px;font-weight:800;letter-spacing:1.7px;text-transform:uppercase;color:var(--text3);margin-bottom:14px}.card.dark .card-label{color:rgba(255,255,255,.42)}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.muted{color:var(--text3)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.page.active .animate{animation:fadeUp .55s ease both}.page.active .stagger-1{animation-delay:.08s}.page.active .stagger-2{animation-delay:.16s}.page.active .stagger-3{animation-delay:.24s}.page.active .stagger-4{animation-delay:.32s}
+
+/* HOME */
+.home-hero{display:grid;grid-template-columns:1.05fr .95fr;gap:26px;min-height:620px;align-items:center;padding:80px 40px 30px}.hero-actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}.hero-visual{height:540px;border-radius:28px;background:radial-gradient(circle at 30% 20%,rgba(46,207,160,.42),transparent 28%),linear-gradient(135deg,#0D1F1A,#132B24 42%,#0B6E4F);position:relative;overflow:hidden;box-shadow:0 26px 80px rgba(13,31,26,.22)}.orbit{position:absolute;border:1px solid rgba(46,207,160,.22);border-radius:50%;animation:spin 28s linear infinite}.orbit.one{width:360px;height:360px;right:-80px;top:30px}.orbit.two{width:260px;height:260px;left:-60px;bottom:50px;animation-direction:reverse}.orbit.three{width:470px;height:470px;left:70px;top:100px;opacity:.55}@keyframes spin{to{transform:rotate(360deg)}}
+.biochar-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:230px;height:230px;border-radius:45% 55% 48% 52%;background:radial-gradient(circle at 35% 30%,#3F4E41,#111 42%,#020403);box-shadow:inset -24px -28px 40px rgba(0,0,0,.55),0 0 0 14px rgba(46,207,160,.06),0 0 64px rgba(46,207,160,.25);animation:float 5.5s ease-in-out infinite}.biochar-core:before,.biochar-core:after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,.08)}.biochar-core:before{width:38px;height:26px;left:52px;top:42px}.biochar-core:after{width:24px;height:18px;right:48px;bottom:64px}@keyframes float{0%,100%{transform:translate(-50%,-50%) translateY(0)}50%{transform:translate(-50%,-50%) translateY(-14px)}}
+.floating-card{position:absolute;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(16px);border-radius:16px;padding:16px;color:white}.floating-card h4{font-family:var(--display);font-size:22px;margin-bottom:4px}.floating-card p{font-size:11px;color:rgba(255,255,255,.56)}.float-a{left:24px;top:34px}.float-b{right:28px;top:86px}.float-c{left:28px;bottom:52px}.float-d{right:34px;bottom:36px}.stream{position:absolute;height:2px;background:linear-gradient(90deg,transparent,var(--mint),transparent);opacity:.55;animation:stream 3s ease-in-out infinite}.stream.s1{width:190px;left:60px;top:185px}.stream.s2{width:260px;right:30px;top:310px;animation-delay:1s}.stream.s3{width:160px;left:180px;bottom:126px;animation-delay:1.7s}@keyframes stream{0%{transform:translateX(-40px);opacity:0}30%,70%{opacity:.65}100%{transform:translateX(40px);opacity:0}}
+.metrics-strip{padding:0 40px 34px}.metric-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow)}.metric-value{font-family:var(--display);font-size:31px;font-weight:800;color:var(--dark);letter-spacing:-.7px}.metric-label{font-size:12px;color:var(--text3);margin-top:6px}.metric-change{font-size:11px;font-weight:700;color:var(--teal);margin-top:10px;display:inline-flex;gap:5px;align-items:center}.process-row{padding:0 40px 46px}.process-card{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--dark);border-radius:22px;overflow:hidden}.process-step{padding:30px;border-right:1px solid rgba(255,255,255,.08);color:white}.process-step:last-child{border-right:none}.process-num{font-family:var(--display);font-size:13px;color:var(--mint);font-weight:800;margin-bottom:18px}.process-title{font-size:16px;font-weight:700;margin-bottom:8px}.process-desc{font-size:12px;color:rgba(255,255,255,.48);line-height:1.7}
+
+/* ABOUT */
+.about-hero{background:var(--dark);display:grid;grid-template-columns:1fr 1fr;min-height:390px}.about-content{padding:70px 40px;display:flex;flex-direction:column;justify-content:center}.about-content h1{font-family:var(--display);font-size:44px;font-weight:800;line-height:1.1;color:white;letter-spacing:-1.2px}.about-content h1 span{color:var(--mint)}.about-content p{color:rgba(255,255,255,.55);font-size:14px;line-height:1.85;margin-top:16px;max-width:520px}.about-art{position:relative;background:radial-gradient(circle at 50% 50%,rgba(46,207,160,.35),transparent 33%),linear-gradient(135deg,#0B6E4F,#132B24);overflow:hidden}.leaf{position:absolute;width:150px;height:230px;border-radius:100% 0 100% 0;background:linear-gradient(135deg,rgba(46,207,160,.55),rgba(169,230,110,.12));transform:rotate(35deg);filter:blur(.2px)}.leaf.l1{right:140px;top:50px}.leaf.l2{right:260px;bottom:20px;transform:rotate(75deg);opacity:.65}.leaf.l3{left:120px;top:140px;transform:rotate(-30deg);opacity:.55}.mission-section{padding:32px 40px}.mission-card h3{font-family:var(--display);font-size:22px;margin-bottom:12px}.mission-card p{font-size:14px;line-height:1.75;color:var(--text2)}.value-grid{padding:0 40px 44px}.value-icon{width:42px;height:42px;border-radius:12px;background:rgba(11,110,79,.08);display:grid;place-items:center;margin-bottom:17px}.value-title{font-weight:800;margin-bottom:8px}.value-desc{font-size:12px;color:var(--text3);line-height:1.7}
+
+/* AI PREDICTION */
+.ai-hero{padding:54px 40px 22px}.ai-main{display:grid;grid-template-columns:1fr 1.4fr;gap:16px;padding:0 40px 42px}.form-row{margin-bottom:16px}.form-row label{display:block;font-size:12px;font-weight:700;color:var(--text2);margin-bottom:7px}.form-control{width:100%;padding:13px 14px;background:var(--bg);border:1px solid var(--border);border-radius:11px;color:var(--text);outline:none;font-size:14px}.form-control:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(11,110,79,.08)}.range-row{display:flex;gap:10px;align-items:center}.range-row input[type=range]{flex:1;accent-color:var(--teal)}.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.result-card{background:var(--bg);border-radius:14px;padding:18px;border:1px solid rgba(11,110,79,.08)}.result-val{font-family:var(--display);font-size:30px;font-weight:800;color:var(--dark);margin-top:4px}.result-unit{font-size:12px;color:var(--text3)}.result-bar{height:6px;background:var(--bg2);border-radius:8px;overflow:hidden;margin-top:13px}.result-bar span{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,var(--teal),var(--mint));width:20%;transition:width .6s ease}.insight{margin-top:16px;background:linear-gradient(135deg,var(--dark),var(--dark2));color:white;border-radius:16px;padding:20px;display:flex;gap:14px;align-items:flex-start}.insight-icon{width:36px;height:36px;border-radius:10px;background:rgba(46,207,160,.17);display:grid;place-items:center;color:var(--mint);font-size:17px;flex-shrink:0}.insight-title{font-weight:800;margin-bottom:5px}.insight-text{font-size:13px;color:rgba(255,255,255,.58);line-height:1.65}.chart-box{height:250px;margin-top:18px}.mini-ledger{margin-top:16px;display:grid;gap:10px}.ledger-row{display:flex;justify-content:space-between;align-items:center;background:var(--bg);border-radius:12px;padding:12px 14px;font-size:13px}.ledger-row strong{color:var(--teal)}
+
+/* PASSPORT */
+.passport-page{padding:46px 40px}.passport-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;margin-top:20px}.passport-card{background:linear-gradient(135deg,#fff,#F8F6EF);border:1px solid var(--border);border-radius:24px;padding:30px;box-shadow:var(--shadow)}.passport-top{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:18px}.passport-id{font-family:var(--display);font-size:29px;font-weight:800;letter-spacing:-.7px;color:var(--dark)}.passport-status{font-size:10px;font-weight:800;letter-spacing:1.6px;color:var(--teal);background:rgba(11,110,79,.09);border:1px solid rgba(11,110,79,.14);border-radius:30px;padding:7px 10px}.passport-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.passport-item{background:var(--bg);border-radius:13px;padding:14px}.passport-item span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);font-weight:800;margin-bottom:7px}.passport-item b{font-size:15px}.qr-wrap{display:flex;gap:18px;align-items:center;margin-top:20px;background:var(--dark);border-radius:18px;padding:18px;color:white}.qr{width:116px;height:116px;background:#fff;border-radius:10px;padding:9px;display:grid;grid-template-columns:repeat(7,1fr);gap:3px;flex-shrink:0}.qr div{background:#111;border-radius:1px}.qr div:nth-child(2n){opacity:.1}.qr div:nth-child(5n),.qr div:nth-child(7n){opacity:1}.qr-copy h4{font-family:var(--display);font-size:18px;margin-bottom:6px}.qr-copy p{font-size:12px;color:rgba(255,255,255,.54);line-height:1.65}.trace-list{display:grid;gap:13px}.trace-item{display:grid;grid-template-columns:42px 1fr auto;gap:12px;align-items:center;padding:14px;background:var(--card);border:1px solid var(--border);border-radius:14px}.trace-icon{width:42px;height:42px;border-radius:11px;background:rgba(11,110,79,.08);display:grid;place-items:center;color:var(--teal);font-weight:800}.trace-title{font-weight:800;font-size:14px}.trace-desc{font-size:12px;color:var(--text3);margin-top:3px}.trace-time{font-size:11px;color:var(--teal);font-weight:800}.verification{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}.verify-box{background:var(--bg);border-radius:13px;padding:14px;text-align:center}.verify-box b{font-family:var(--display);font-size:22px;color:var(--teal)}.verify-box span{display:block;font-size:10px;color:var(--text3);font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+
+/* MARKETPLACE */
+.market-hero{padding:52px 40px 20px}.market-tools{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:20px;flex-wrap:wrap}.market-main{padding:0 40px 42px}.price-ticker{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.ticker-item{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:18px;box-shadow:var(--shadow)}.ticker-val{font-family:var(--display);font-size:26px;font-weight:800;color:var(--dark)}.ticker-label{font-size:11px;color:var(--text3);margin-top:5px}.listing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.listing{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden}.listing:before{content:'';position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg,var(--teal),var(--mint))}.seller{font-weight:800;margin-bottom:4px}.listing-meta{font-size:12px;color:var(--text3)}.credit-amount{font-family:var(--display);font-size:38px;font-weight:800;color:var(--teal);margin:18px 0 2px}.credit-unit{font-size:12px;color:var(--text3)}.listing-row{display:flex;justify-content:space-between;border-top:1px solid var(--border);padding-top:12px;margin-top:14px;font-size:12px;color:var(--text2)}.listing-actions{display:flex;gap:8px;margin-top:16px}.listing-actions .btn{flex:1;padding:10px 11px}.trade-panel{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px}.trade-card{background:var(--dark);color:white;border-radius:18px;padding:24px;display:flex;justify-content:space-between;gap:20px;align-items:center}.trade-card p{font-size:13px;color:rgba(255,255,255,.55);line-height:1.6;margin-top:6px}
+
+/* ESG */
+.esg-hero{padding:52px 40px 22px}.esg-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;padding:0 40px 16px}.score-ring{position:relative;width:160px;height:160px;margin:8px auto}.score-ring svg{width:160px;height:160px;transform:rotate(-90deg)}.ring-bg{fill:none;stroke:#E8E4DC;stroke-width:12}.ring-fg{fill:none;stroke:url(#grad);stroke-width:12;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transition:stroke-dashoffset 2s ease}.score-center{position:absolute;inset:0;display:grid;place-items:center;text-align:center}.score-center b{font-family:var(--display);font-size:42px;color:var(--teal)}.score-center span{display:block;font-size:10px;color:var(--text3);font-weight:800;letter-spacing:1.4px}.esg-charts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:0 40px 42px}.chart-card{height:290px}.impact-matrix{padding:0 40px 44px}.matrix-card{background:var(--dark);border-radius:20px;padding:30px;color:white}.matrix-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}.matrix-item{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}.matrix-item b{font-family:var(--display);font-size:26px;color:var(--mint)}.matrix-item span{display:block;font-size:11px;color:rgba(255,255,255,.45);margin-top:6px;line-height:1.5}
+
+/* PARTNER */
+.partner-page{background:var(--dark);color:white}.partner-layout{display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:center;padding:70px 40px 40px;min-height:calc(100vh - 58px)}.partner-layout h1{font-family:var(--display);font-size:50px;line-height:1.05;letter-spacing:-1.5px}.partner-layout h1 span{color:var(--mint)}.partner-layout p{font-size:15px;color:rgba(255,255,255,.56);line-height:1.8;margin-top:18px}.partner-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:30px 0}.partner-pill{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;font-weight:800}.contact-card{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:32px}.contact-card h3{font-family:var(--display);font-size:22px;margin-bottom:6px}.contact-card p{font-size:13px;margin:0 0 24px;color:rgba(255,255,255,.45)}.contact-card .form-control{background:rgba(255,255,255,.065);border-color:rgba(255,255,255,.12);color:white}.contact-card textarea{min-height:102px;resize:vertical}.contact-card .form-row label{color:rgba(255,255,255,.55)}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 40px;display:flex;justify-content:space-between;align-items:center}.footer-logo{font-family:var(--display);font-weight:800;color:var(--dark)}.footer-copy{font-size:12px;color:var(--text3)}.footer-links{display:flex;gap:22px;font-size:12px;color:var(--text3)}
+.partner-page footer{background:var(--dark);border-top:1px solid rgba(255,255,255,.07)}.partner-page .footer-logo{color:white}.partner-page .footer-links,.partner-page .footer-copy{color:rgba(255,255,255,.35)}
+
+/* RESPONSIVE */
+@media(max-width:980px){.home-hero,.about-hero,.ai-main,.passport-layout,.esg-grid,.partner-layout{grid-template-columns:1fr}.hero-visual{height:430px}.grid-4,.process-card,.price-ticker,.matrix-grid{grid-template-columns:repeat(2,1fr)}.listing-grid,.esg-charts{grid-template-columns:1fr}.about-art{display:none}.trade-panel{grid-template-columns:1fr}}
+@media(max-width:768px){nav{height:54px;padding:0 16px}.page{padding-top:54px}.nav-links,.btn-connect,.avatar{display:none}.hamburger{display:flex}.mobile-drawer{top:54px}.live-badge{font-size:9px;padding:4px 8px}.home-hero{padding:36px 16px 20px;min-height:auto}.hero-title{font-size:38px;letter-spacing:-1.3px}.hero-copy{font-size:14px}.hero-visual{height:360px;border-radius:20px}.floating-card{padding:12px}.floating-card h4{font-size:17px}.biochar-core{width:170px;height:170px}.metrics-strip,.process-row,.wrap,.about-content,.mission-section,.value-grid,.ai-hero,.ai-main,.passport-page,.market-hero,.market-main,.esg-hero,.esg-grid,.esg-charts,.impact-matrix,.partner-layout,footer{padding-left:16px;padding-right:16px}.grid-2,.grid-3,.grid-4,.result-grid,.passport-grid,.verification,.price-ticker,.matrix-grid{grid-template-columns:1fr}.process-card{grid-template-columns:1fr}.process-step{border-right:none;border-bottom:1px solid rgba(255,255,255,.08)}.process-step:last-child{border-bottom:none}.about-content h1,.partner-layout h1{font-size:31px}.ai-main{padding-bottom:24px}.qr-wrap{flex-direction:column;align-items:flex-start}.trace-item{grid-template-columns:38px 1fr}.trace-time{grid-column:2}.trade-card{flex-direction:column;align-items:flex-start}.partner-list{grid-template-columns:1fr}.contact-card{padding:22px}.footer-links{display:none}footer{flex-direction:column;gap:8px;text-align:center}.chart-card{height:250px}}
+@media(max-width:420px){.hero-title{font-size:33px}.hero-actions{flex-direction:column}.btn{width:100%}.hero-visual{height:300px}.float-b{display:none}.price-ticker{gap:9px}.card{padding:19px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo"><div class="logo-mark">P+</div> PALMNEXUS</div>
+  <div class="nav-links">
+    <a class="nav-link active" onclick="showPage('home',this)">Home</a>
+    <a class="nav-link" onclick="showPage('about',this)">About</a>
+    <a class="nav-link" onclick="showPage('ai',this)">AI Prediction</a>
+    <a class="nav-link" onclick="showPage('passport',this)">Carbon Passport</a>
+    <a class="nav-link" onclick="showPage('market',this)">Marketplace</a>
+    <a class="nav-link" onclick="showPage('esg',this)">ESG Dashboard</a>
+  </div>
+  <div class="nav-right">
+    <div class="live-badge"><div class="live-dot"></div> LIVE CARBON</div>
+    <button class="btn btn-dark btn-connect" onclick="showPage('partner',null)">Partner</button>
+    <div class="avatar">PX</div>
+    <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+<div class="mobile-drawer" id="mobileDrawer">
+  <a class="nav-link" onclick="showPage('home',this);toggleMenu(false)">Home</a>
+  <a class="nav-link" onclick="showPage('about',this);toggleMenu(false)">About</a>
+  <a class="nav-link" onclick="showPage('ai',this);toggleMenu(false)">AI Prediction</a>
+  <a class="nav-link" onclick="showPage('passport',this);toggleMenu(false)">Carbon Passport</a>
+  <a class="nav-link" onclick="showPage('market',this);toggleMenu(false)">Marketplace</a>
+  <a class="nav-link" onclick="showPage('esg',this);toggleMenu(false)">ESG Dashboard</a>
+  <button class="btn btn-dark" style="margin-top:10px" onclick="showPage('partner',null);toggleMenu(false)">Become Partner</button>
+</div>
+
+<!-- HOME -->
+<section id="page-home" class="page active">
+  <div class="home-hero">
+    <div class="animate">
+      <div class="section-tag">PALMNEXUS Carbon+</div>
+      <h1 class="hero-title">Transforming <span>Palm Waste</span> into Carbon Assets</h1>
+      <p class="hero-copy">AI-powered platform that converts palm oil biomass into biochar, enables carbon sequestration tracking, and generates verified carbon credits.</p>
+      <div class="hero-actions">
+        <button class="btn btn-dark" onclick="showPage('ai',null)">Try AI Prediction</button>
+        <button class="btn btn-outline" onclick="showPage('market',null)">Explore Marketplace</button>
+      </div>
+    </div>
+    <div class="hero-visual animate stagger-1">
+      <div class="orbit one"></div><div class="orbit two"></div><div class="orbit three"></div>
+      <div class="stream s1"></div><div class="stream s2"></div><div class="stream s3"></div>
+      <div class="biochar-core"></div>
+      <div class="floating-card float-a"><h4><span class="counter" data-target="12840">0</span> t</h4><p>Biomass processed</p></div>
+      <div class="floating-card float-b"><h4><span class="counter" data-target="3820">0</span> t</h4><p>Biochar produced</p></div>
+      <div class="floating-card float-c"><h4><span class="counter" data-target="9670">0</span> tCO₂e</h4><p>Carbon stored</p></div>
+      <div class="floating-card float-d"><h4><span class="counter" data-target="9120">0</span></h4><p>Credits issued</p></div>
+    </div>
+  </div>
+  <div class="metrics-strip grid-4">
+    <div class="metric-card animate stagger-1"><div class="metric-value"><span id="liveBiomass">12,840</span> t</div><div class="metric-label">Biomass Processed</div><div class="metric-change">↑ live mill intake</div></div>
+    <div class="metric-card animate stagger-2"><div class="metric-value"><span id="liveBiochar">3,820</span> t</div><div class="metric-label">Biochar Produced</div><div class="metric-change">↑ pyrolysis batches</div></div>
+    <div class="metric-card animate stagger-3"><div class="metric-value"><span id="liveCO2">9,670</span> tCO₂e</div><div class="metric-label">CO₂ Stored</div><div class="metric-change">↑ sequestration ledger</div></div>
+    <div class="metric-card animate stagger-4"><div class="metric-value"><span id="liveCredits">9,120</span></div><div class="metric-label">Carbon Credits Generated</div><div class="metric-change">↑ verified assets</div></div>
+  </div>
+  <div class="process-row">
+    <div class="process-card animate stagger-2">
+      <div class="process-step"><div class="process-num">01</div><div class="process-title">Palm Biomass</div><div class="process-desc">EFB, shell, and fiber are collected from palm oil mills as traceable feedstock.</div></div>
+      <div class="process-step"><div class="process-num">02</div><div class="process-title">Pyrolysis to Biochar</div><div class="process-desc">Controlled thermal conversion turns waste into stable carbon-rich biochar.</div></div>
+      <div class="process-step"><div class="process-num">03</div><div class="process-title">Carbon Passport</div><div class="process-desc">Each batch receives QR tracking, origin data, verification record, and carbon stored value.</div></div>
+      <div class="process-step"><div class="process-num">04</div><div class="process-title">Carbon Marketplace</div><div class="process-desc">Verified tCO₂e credits can be listed, priced, bought, sold, and monitored.</div></div>
+    </div>
+  </div>
+  <footer><div class="footer-logo">PALMNEXUS Carbon+</div><div class="footer-links"><a>Privacy</a><a>Verification</a><a>ESG API</a></div><div class="footer-copy">© 2026 PALMNEXUS. Biochar carbon assets platform.</div></footer>
+</section>
+
+<!-- ABOUT -->
+<section id="page-about" class="page">
+  <div class="about-hero">
+    <div class="about-content animate">
+      <div class="section-tag" style="background:rgba(46,207,160,.13);color:var(--mint)">About PALMNEXUS</div>
+      <h1>From palm biomass waste to a <span>traceable carbon economy.</span></h1>
+      <p>Indonesia produces massive palm biomass waste while industries need credible carbon offsets. PALMNEXUS Carbon+ connects both sides through biochar production, digital traceability, and carbon credit verification.</p>
+    </div>
+    <div class="about-art"><div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div></div>
+  </div>
+  <div class="mission-section grid-2">
+    <div class="card animate stagger-1"><div class="card-label">Problem</div><h3>Massive palm biomass waste</h3><p>Palm oil operations produce empty fruit bunches, shells, and fiber. Without a reliable carbon pathway, much of that biomass remains underutilized while companies keep searching for measurable offsets.</p></div>
+    <div class="card dark animate stagger-2"><div class="card-label">Solution</div><h3>Biochar + carbon credits</h3><p>PALMNEXUS converts palm biomass into biochar and carbon credits through a traceable digital ecosystem that records feedstock origin, processing data, storage value, and verification status.</p></div>
+  </div>
+  <div class="value-grid grid-4">
+    <div class="card animate stagger-1"><div class="value-icon">♻</div><div class="value-title">Circular Economy</div><div class="value-desc">Palm residue becomes valuable biochar instead of unmanaged waste.</div></div>
+    <div class="card animate stagger-2"><div class="value-icon">⬇</div><div class="value-title">Carbon Sequestration</div><div class="value-desc">Stable carbon is tracked and converted into quantified tCO₂e impact.</div></div>
+    <div class="card animate stagger-3"><div class="value-icon">🌱</div><div class="value-title">Sustainable Agriculture</div><div class="value-desc">Biochar can support soil improvement and long-term land productivity.</div></div>
+    <div class="card animate stagger-4"><div class="value-icon">✓</div><div class="value-title">ESG Compliance</div><div class="value-desc">Dashboards help partners report carbon reduction and sustainability scores.</div></div>
+  </div>
+  <footer><div class="footer-logo">PALMNEXUS Carbon+</div><div class="footer-links"><a>Biochar</a><a>Carbon Ledger</a><a>Partner Network</a></div><div class="footer-copy">Waste in, carbon asset out.</div></footer>
+</section>
+
+<!-- AI PREDICTION -->
+<section id="page-ai" class="page">
+  <div class="ai-hero animate">
+    <div class="section-tag">AI Carbon Prediction</div>
+    <h1 class="hero-title" style="font-size:44px">Predict biochar yield, fixed carbon, sequestration, and credit value.</h1>
+    <p class="hero-copy">Input feedstock type, biomass mass, moisture content, and pyrolysis temperature. The model estimates conversion outcomes and gives operational insight.</p>
+  </div>
+  <div class="ai-main">
+    <div class="card animate stagger-1">
+      <div class="card-label">Prediction Inputs</div>
+      <div class="form-row"><label>Feedstock Type</label><select class="form-control" id="feedstock" oninput="predictCarbon()"><option value="efb">EFB — Empty Fruit Bunch</option><option value="shell">Palm Kernel Shell</option><option value="fiber">Palm Fiber</option></select></div>
+      <div class="form-row"><label>Biomass Mass (Ton)</label><input class="form-control" id="mass" type="number" value="120" min="1" oninput="predictCarbon()"></div>
+      <div class="form-row"><label>Moisture Content (%)</label><div class="range-row"><input id="moisture" type="range" min="5" max="45" value="18" oninput="predictCarbon()"><b id="moistureVal">18%</b></div></div>
+      <div class="form-row"><label>Pyrolysis Temperature (°C)</label><div class="range-row"><input id="temp" type="range" min="350" max="700" step="10" value="550" oninput="predictCarbon()"><b id="tempVal">550°C</b></div></div>
+      <button class="btn btn-dark" style="width:100%;margin-top:6px" onclick="predictCarbon(true)">Run Carbon Prediction</button>
+      <div class="mini-ledger">
+        <div class="ledger-row"><span>Model confidence</span><strong id="confidence">92%</strong></div>
+        <div class="ledger-row"><span>Recommended operation</span><strong id="recommendation">550°C / low moisture</strong></div>
+      </div>
+    </div>
+    <div class="card animate stagger-2">
+      <div class="card-label">Prediction Outputs</div>
+      <div class="result-grid">
+        <div class="result-card"><div class="result-unit">Biochar Yield</div><div class="result-val" id="yieldOut">36.2 t</div><div class="result-bar"><span id="yieldBar"></span></div></div>
+        <div class="result-card"><div class="result-unit">Fixed Carbon</div><div class="result-val" id="carbonOut">26.5 tC</div><div class="result-bar"><span id="carbonBar"></span></div></div>
+        <div class="result-card"><div class="result-unit">CO₂ Sequestration</div><div class="result-val" id="co2Out">97.1 tCO₂e</div><div class="result-bar"><span id="co2Bar"></span></div></div>
+        <div class="result-card"><div class="result-unit">Carbon Credit Value</div><div class="result-val" id="valueOut">$1,941</div><div class="result-bar"><span id="valueBar"></span></div></div>
+      </div>
+      <div class="insight"><div class="insight-icon">AI</div><div><div class="insight-title">Carbon Intelligence Insight</div><div class="insight-text" id="insightText">Operating at 550°C is predicted to increase carbon storage by 14% compared with 450°C.</div></div></div>
+      <div class="chart-box"><canvas id="predictionChart"></canvas></div>
+    </div>
+  </div>
+  <footer><div class="footer-logo">PALMNEXUS AI</div><div class="footer-links"><a>Feedstock</a><a>Pyrolysis</a><a>tCO₂e</a></div><div class="footer-copy">Prediction values are demo estimates for prototype presentation.</div></footer>
+</section>
+
+<!-- PASSPORT -->
+<section id="page-passport" class="page">
+  <div class="passport-page">
+    <div class="animate">
+      <div class="section-tag">Carbon Passport</div>
+      <h1 class="hero-title" style="font-size:44px">Every biochar batch gets a traceable carbon identity.</h1>
+      <p class="hero-copy">Track biomass origin, processing date, biochar produced, carbon stored, QR verification, and audit trail in one digital passport.</p>
+    </div>
+    <div class="passport-layout">
+      <div class="passport-card animate stagger-1">
+        <div class="passport-top"><div><div class="passport-id">PX-BIO-2026-0418</div><div class="muted" style="font-size:13px;margin-top:5px">Carbon Passport Batch ID</div></div><div class="passport-status">VERIFIED</div></div>
+        <div class="passport-grid">
+          <div class="passport-item"><span>Biomass Origin</span><b>Riau Palm Oil Mill Cluster</b></div>
+          <div class="passport-item"><span>Processing Date</span><b>16 June 2026</b></div>
+          <div class="passport-item"><span>Biochar Produced</span><b><span id="passportBiochar">36.2</span> ton</b></div>
+          <div class="passport-item"><span>Carbon Stored</span><b><span id="passportCarbon">97.1</span> tCO₂e</b></div>
+        </div>
+        <div class="qr-wrap"><div class="qr" id="qrGrid"></div><div class="qr-copy"><h4>QR Code Tracking</h4><p>Scan to view origin, processing record, sequestration estimate, verification history, and marketplace status.</p></div></div>
+        <div class="verification"><div class="verify-box"><b>4</b><span>Audit Logs</span></div><div class="verify-box"><b>100%</b><span>Traceability</span></div><div class="verify-box"><b>1</b><span>Credit Lot</span></div></div>
+      </div>
+      <div class="card animate stagger-2">
+        <div class="card-label">Traceability Dashboard</div>
+        <div class="trace-list">
+          <div class="trace-item"><div class="trace-icon">01</div><div><div class="trace-title">Feedstock Registered</div><div class="trace-desc">EFB, shell, and fiber weighed at mill gate.</div></div><div class="trace-time">08:40</div></div>
+          <div class="trace-item"><div class="trace-icon">02</div><div><div class="trace-title">Pyrolysis Batch Completed</div><div class="trace-desc">Temperature profile and conversion mass uploaded.</div></div><div class="trace-time">11:25</div></div>
+          <div class="trace-item"><div class="trace-icon">03</div><div><div class="trace-title">Carbon Stored Calculated</div><div class="trace-desc">AI + verification rules estimated sequestration value.</div></div><div class="trace-time">11:42</div></div>
+          <div class="trace-item"><div class="trace-icon">04</div><div><div class="trace-title">Verification Record Issued</div><div class="trace-desc">Carbon passport locked and ready for market listing.</div></div><div class="trace-time">12:10</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer><div class="footer-logo">PALMNEXUS Passport</div><div class="footer-links"><a>QR</a><a>Verification</a><a>Traceability</a></div><div class="footer-copy">Batch-level identity for carbon assets.</div></footer>
+</section>
+
+<!-- MARKETPLACE -->
+<section id="page-market" class="page">
+  <div class="market-hero animate">
+    <div class="section-tag">Carbon Marketplace</div>
+    <h1 class="hero-title" style="font-size:44px">Buy, sell, price, and track verified biochar carbon credits.</h1>
+    <div class="market-tools"><p class="hero-copy" style="margin:0">PALMNEXUS marketplace connects palm oil mills, carbon credit buyers, mining companies, and agricultural firms.</p><div style="display:flex;gap:8px"><button class="btn btn-dark">Buy Credits</button><button class="btn btn-outline">Sell Credits</button></div></div>
+  </div>
+  <div class="market-main">
+    <div class="price-ticker">
+      <div class="ticker-item animate stagger-1"><div class="ticker-val">$20.4</div><div class="ticker-label">Avg. Credit Price / tCO₂e</div></div>
+      <div class="ticker-item animate stagger-2"><div class="ticker-val"><span id="availableCredits">1,284</span></div><div class="ticker-label">Credit Availability</div></div>
+      <div class="ticker-item animate stagger-3"><div class="ticker-val">+8.6%</div><div class="ticker-label">Market Price Trend</div></div>
+      <div class="ticker-item animate stagger-4"><div class="ticker-val">18</div><div class="ticker-label">Active Credit Lots</div></div>
+    </div>
+    <div class="listing-grid">
+      <div class="listing animate stagger-1"><div class="seller">PT Sawit Nusantara</div><div class="listing-meta">Riau · Verified Biochar Credit</div><div class="credit-amount">72</div><div class="credit-unit">tCO₂e Available</div><div class="listing-row"><span>Price</span><b>$1,468</b></div><div class="listing-row"><span>Passport</span><b>PX-BIO-0418</b></div><div class="listing-actions"><button class="btn btn-dark">Buy</button><button class="btn btn-outline">Details</button></div></div>
+      <div class="listing animate stagger-2"><div class="seller">Green Mill Kalimantan</div><div class="listing-meta">Kalimantan · EFB Biochar</div><div class="credit-amount">116</div><div class="credit-unit">tCO₂e Available</div><div class="listing-row"><span>Price</span><b>$2,366</b></div><div class="listing-row"><span>Passport</span><b>PX-BIO-0491</b></div><div class="listing-actions"><button class="btn btn-dark">Buy</button><button class="btn btn-outline">Details</button></div></div>
+      <div class="listing animate stagger-3"><div class="seller">Agro Carbon Sumatra</div><div class="listing-meta">North Sumatra · Shell Biochar</div><div class="credit-amount">58</div><div class="credit-unit">tCO₂e Available</div><div class="listing-row"><span>Price</span><b>$1,183</b></div><div class="listing-row"><span>Passport</span><b>PX-BIO-0512</b></div><div class="listing-actions"><button class="btn btn-dark">Buy</button><button class="btn btn-outline">Details</button></div></div>
+    </div>
+    <div class="trade-panel">
+      <div class="trade-card animate stagger-2"><div><div class="card-label">Seller Console</div><h3>List verified carbon credits</h3><p>Upload passport ID, define credit volume, set market price, and publish for buyers.</p></div><button class="btn btn-teal">Sell Credits</button></div>
+      <div class="trade-card animate stagger-3"><div><div class="card-label">Buyer Console</div><h3>Track portfolio and prices</h3><p>Monitor availability, market movement, and verified lot ownership.</p></div><button class="btn btn-teal">View Market</button></div>
+    </div>
+  </div>
+  <footer><div class="footer-logo">PALMNEXUS Market</div><div class="footer-links"><a>Buy</a><a>Sell</a><a>Track Prices</a></div><div class="footer-copy">Example listings for prototype website.</div></footer>
+</section>
+
+<!-- ESG -->
+<section id="page-esg" class="page">
+  <div class="esg-hero animate">
+    <div class="section-tag">ESG Dashboard</div>
+    <h1 class="hero-title" style="font-size:44px">Visual analytics for carbon reduction, biochar production, revenue, and sustainability score.</h1>
+  </div>
+  <div class="esg-grid">
+    <div class="card animate stagger-1" style="height:330px"><div class="card-label">Carbon Reduction Trend</div><canvas id="carbonTrend"></canvas></div>
+    <div class="card animate stagger-2"><div class="card-label">Sustainability Score</div><div class="score-ring"><svg viewBox="0 0 160 160"><defs><linearGradient id="grad" x1="0" x2="1"><stop offset="0" stop-color="#0B6E4F"/><stop offset="1" stop-color="#2ECFA0"/></linearGradient></defs><circle class="ring-bg" cx="80" cy="80" r="70"/><circle class="ring-fg" id="scoreRing" cx="80" cy="80" r="70"/></svg><div class="score-center"><div><b id="scoreVal">0</b><span>ESG SCORE</span></div></div></div><p style="font-size:13px;color:var(--text2);line-height:1.7;text-align:center">Score combines carbon reduction, traceability completeness, biochar output stability, and credit performance.</p></div>
+  </div>
+  <div class="esg-charts">
+    <div class="card chart-card animate stagger-1"><div class="card-label">Biochar Production Trend</div><canvas id="biocharChart"></canvas></div>
+    <div class="card chart-card animate stagger-2"><div class="card-label">Credit Revenue Trend</div><canvas id="revenueChart"></canvas></div>
+    <div class="card chart-card animate stagger-3"><div class="card-label">Credit Availability</div><canvas id="availabilityChart"></canvas></div>
+  </div>
+  <div class="impact-matrix">
+    <div class="matrix-card animate stagger-3">
+      <div class="card-label">Impact Matrix</div>
+      <h2 style="font-family:var(--display);font-size:28px">PALMNEXUS Carbon+ Operational Impact</h2>
+      <div class="matrix-grid">
+        <div class="matrix-item"><b>68%</b><span>Waste diverted into biochar pathway</span></div>
+        <div class="matrix-item"><b>9.6k</b><span>tCO₂e stored in carbon ledger</span></div>
+        <div class="matrix-item"><b>$184k</b><span>Estimated annual credit revenue</span></div>
+        <div class="matrix-item"><b>100%</b><span>Passport traceability coverage</span></div>
+      </div>
+    </div>
+  </div>
+  <footer><div class="footer-logo">PALMNEXUS ESG</div><div class="footer-links"><a>Reduction</a><a>Revenue</a><a>Score</a></div><div class="footer-copy">Carbon impact, shown clean. As it should be.</div></footer>
+</section>
+
+<!-- PARTNER -->
+<section id="page-partner" class="page partner-page">
+  <div class="partner-layout">
+    <div class="animate">
+      <div class="section-tag" style="background:rgba(46,207,160,.13);color:var(--mint)">Contact & Partnership</div>
+      <h1>Become a <span>PALMNEXUS Partner</span> Today</h1>
+      <p>PALMNEXUS Carbon+ is designed for palm oil mills, mining companies, agricultural firms, and carbon credit buyers who need a traceable route from biomass waste to verified carbon assets.</p>
+      <div class="partner-list">
+        <div class="partner-pill">Palm Oil Mills</div><div class="partner-pill">Mining Companies</div><div class="partner-pill">Agricultural Firms</div><div class="partner-pill">Carbon Credit Buyers</div>
+      </div>
+      <button class="btn btn-teal" onclick="alert('Partnership request submitted. Demo mode aktif.')">Become a PALMNEXUS Partner</button>
+    </div>
+    <div class="contact-card animate stagger-1">
+      <h3>Partnership Form</h3>
+      <p>Tell us your biomass source, credit needs, or ESG target.</p>
+      <div class="form-row"><label>Organization</label><input class="form-control" placeholder="PT Example Agro Carbon"></div>
+      <div class="form-row"><label>Partner Type</label><select class="form-control"><option>Palm Oil Mill</option><option>Mining Company</option><option>Agricultural Firm</option><option>Carbon Credit Buyer</option></select></div>
+      <div class="form-row"><label>Email</label><input class="form-control" placeholder="contact@company.com"></div>
+      <div class="form-row"><label>Message</label><textarea class="form-control" placeholder="Tell us about your biomass volume, carbon offset demand, or ESG program..."></textarea></div>
+      <button class="btn btn-teal" style="width:100%" onclick="alert('Demo form submitted!')">Submit Partnership Request</button>
+    </div>
+  </div>
+  <footer><div class="footer-logo">PALMNEXUS Carbon+</div><div class="footer-links"><a>Partnership</a><a>Verification</a><a>Marketplace</a></div><div class="footer-copy">Built for biochar carbon assets.</div></footer>
+</section>
+
+<script>
+let chartsReady=false;
+function showPage(page,link){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const target=document.getElementById('page-'+page); if(target) target.classList.add('active');
+  document.querySelectorAll('nav .nav-link').forEach(a=>a.classList.remove('active'));
+  if(link && link.classList.contains('nav-link')) link.classList.add('active');
+  else { const matched=[...document.querySelectorAll('nav .nav-link')].find(a=>a.textContent.toLowerCase().includes(page==='ai'?'ai':page)); if(matched) matched.classList.add('active'); }
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(()=>{animateCounters(); if(!chartsReady){initCharts(); chartsReady=true;} animateScore();},100);
+}
+function toggleMenu(force){ const d=document.getElementById('mobileDrawer'); const show=force===undefined?d.style.display!=='block':force; d.style.display=show?'block':'none'; }
+function animateCounters(){ document.querySelectorAll('.counter').forEach(el=>{ const target=+el.dataset.target; let start=0; const dur=1200; const t0=performance.now(); function tick(t){ let p=Math.min((t-t0)/dur,1); let val=Math.floor(target*(1-Math.pow(1-p,3))); el.textContent=val.toLocaleString(); if(p<1) requestAnimationFrame(tick); } requestAnimationFrame(tick); }); }
+function animateScore(){ const ring=document.getElementById('scoreRing'), val=document.getElementById('scoreVal'); if(!ring||!val)return; const score=87; ring.style.strokeDashoffset=440-(440*score/100); let n=0; const int=setInterval(()=>{n+=2; if(n>=score){n=score;clearInterval(int)} val.textContent=n;},20); }
+function predictCarbon(flash=false){
+  const feed=document.getElementById('feedstock').value;
+  const mass=Math.max(1,parseFloat(document.getElementById('mass').value)||0);
+  const moisture=parseFloat(document.getElementById('moisture').value);
+  const temp=parseFloat(document.getElementById('temp').value);
+  document.getElementById('moistureVal').textContent=moisture+'%'; document.getElementById('tempVal').textContent=temp+'°C';
+  const base={efb:.30,shell:.34,fiber:.28}[feed];
+  const carbonRatio={efb:.72,shell:.78,fiber:.69}[feed];
+  const moisturePenalty=Math.max(.72,1-(moisture-10)*.012);
+  const tempBoost=1+(Math.min(temp,600)-450)*.0009-(Math.max(temp-600,0)*.0006);
+  const yieldT=mass*base*moisturePenalty*tempBoost;
+  const fixedC=yieldT*carbonRatio;
+  const stableFraction=.82 + (temp-350)/350*.08;
+  const co2=fixedC*3.667*stableFraction;
+  const creditPrice=20.0 + (temp>=540?1.2:0) - (moisture>30?1.1:0);
+  const value=co2*creditPrice;
+  const fmt=x=>x.toLocaleString(undefined,{maximumFractionDigits:1});
+  document.getElementById('yieldOut').textContent=fmt(yieldT)+' t';
+  document.getElementById('carbonOut').textContent=fmt(fixedC)+' tC';
+  document.getElementById('co2Out').textContent=fmt(co2)+' tCO₂e';
+  document.getElementById('valueOut').textContent='$'+Math.round(value).toLocaleString();
+  document.getElementById('yieldBar').style.width=Math.min(100,yieldT/mass*260)+'%';
+  document.getElementById('carbonBar').style.width=Math.min(100,fixedC/mass*360)+'%';
+  document.getElementById('co2Bar').style.width=Math.min(100,co2/mass*90)+'%';
+  document.getElementById('valueBar').style.width=Math.min(100,value/(mass*35)*100)+'%';
+  document.getElementById('passportBiochar').textContent=fmt(yieldT);
+  document.getElementById('passportCarbon').textContent=fmt(co2);
+  const compared450=Math.round(((tempBoost/(1+(450-450)*.0009))-1)*100);
+  document.getElementById('insightText').textContent=`Operating at ${temp}°C is predicted to ${compared450>=0?'increase':'decrease'} carbon storage by ${Math.abs(compared450)}% compared with 450°C.`;
+  document.getElementById('confidence').textContent=(moisture<30 && temp>=450 && temp<=620?'92%':'84%');
+  document.getElementById('recommendation').textContent=temp<520?'Increase temp toward 550°C':moisture>25?'Reduce moisture before pyrolysis':'550°C / low moisture';
+  if(predictionChart){ predictionChart.data.datasets[0].data=[yieldT,fixedC,co2,value/100]; predictionChart.update(); }
+  if(flash){ document.querySelector('#page-ai .insight').animate([{transform:'scale(1)'},{transform:'scale(1.015)'},{transform:'scale(1)'}],{duration:380}); }
+}
+let predictionChart, carbonTrend, biocharChart, revenueChart, availabilityChart;
+function chartDefaults(){ Chart.defaults.font.family='DM Sans'; Chart.defaults.color='#7A8A85'; Chart.defaults.plugins.legend.labels.usePointStyle=true; }
+function initCharts(){
+  chartDefaults();
+  const ctx=document.getElementById('predictionChart'); if(ctx && !predictionChart){ predictionChart=new Chart(ctx,{type:'bar',data:{labels:['Biochar t','Fixed C t','CO₂e t','Credit $/100'],datasets:[{label:'Prediction Output',data:[36,26,97,19],borderRadius:8,backgroundColor:['#0B6E4F','#1A9E75','#2ECFA0','#A9E66E']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(11,110,79,.08)'},beginAtZero:true},x:{grid:{display:false}}}}}); predictCarbon(); }
+  const c1=document.getElementById('carbonTrend'); if(c1 && !carbonTrend){ carbonTrend=new Chart(c1,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'CO₂ Stored',data:[820,1180,1720,2360,3150,4280],borderColor:'#0B6E4F',backgroundColor:'rgba(11,110,79,.10)',fill:true,tension:.38,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(11,110,79,.08)'}},x:{grid:{display:false}}}}}); }
+  const c2=document.getElementById('biocharChart'); if(c2 && !biocharChart){ biocharChart=new Chart(c2,{type:'bar',data:{labels:['EFB','Shell','Fiber'],datasets:[{label:'Biochar Produced',data:[1480,870,690],backgroundColor:['#0B6E4F','#1A9E75','#2ECFA0'],borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(11,110,79,.08)'}},x:{grid:{display:false}}}}}); }
+  const c3=document.getElementById('revenueChart'); if(c3 && !revenueChart){ revenueChart=new Chart(c3,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'Revenue',data:[14,22,31,43,58,79],borderColor:'#2ECFA0',backgroundColor:'rgba(46,207,160,.12)',fill:true,tension:.38}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'$'+v+'k'},grid:{color:'rgba(11,110,79,.08)'}},x:{grid:{display:false}}}}}); }
+  const c4=document.getElementById('availabilityChart'); if(c4 && !availabilityChart){ availabilityChart=new Chart(c4,{type:'doughnut',data:{labels:['Available','Reserved','Sold'],datasets:[{data:[52,18,30],backgroundColor:['#2ECFA0','#A9E66E','#0B6E4F'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{position:'bottom'}}}}); }
+}
+function makeQR(){ const qr=document.getElementById('qrGrid'); if(!qr)return; qr.innerHTML=''; for(let i=0;i<49;i++){ const d=document.createElement('div'); if([0,1,2,7,9,14,15,16,32,40,41,48,35,36].includes(i)) d.style.opacity=1; qr.appendChild(d); } }
+function liveMetrics(){
+  const ids=['liveBiomass','liveBiochar','liveCO2','liveCredits','availableCredits'];
+  ids.forEach(id=>{ const el=document.getElementById(id); if(!el)return; const raw=parseInt(el.textContent.replace(/,/g,'')); const inc=Math.floor(Math.random()*4); el.textContent=(raw+inc).toLocaleString(); });
+}
+window.addEventListener('load',()=>{ animateCounters(); initCharts(); makeQR(); animateScore(); predictCarbon(); setInterval(liveMetrics,3200); });
+</script>
+</body>
+</html>
